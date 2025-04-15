@@ -2,51 +2,8 @@
 #Conversión de Números:
 #Desarrollen un programa que convierta números decimales a binarios y, de forma opcional, también de binario a decimal.
 #Extensión: Validar la entrada y mostrar mensajes de error ante datos incorrectos.
-
-
 import math
 
-
-#Definicion de lista enlazada:
-class Nodo:
-    def __init__(self, dato):
-        self.dato = dato
-        self.siguiente = None
-
-class ListaEnlazada:
-    def __init__(self):
-        self.cabeza = None
-
-    def insertar(self, dato):
-        nuevo_nodo = Nodo(dato) #se crea el nuevo nodo (3)      // se crea el nuevo nodo (2)    // se crea el nuevo nodo (1)
-        nuevo_nodo.siguiente = self.cabeza #el puntero -> None  // el puntero -> 3              // el puntero -> 2
-        self.cabeza = nuevo_nodo #Cabeza(None) = 3              // cabeza(3) = 2                // cabeza(2) = 1
-
-    def mostrar(self):
-        actual = self.cabeza
-        while (actual):
-            print(actual.dato, end= "")
-            actual = actual.siguiente
-
-    def invertir_lista(self):
-        actual = self.cabeza
-        siguiente = actual.siguiente
-        anterior = None
-        while(actual):
-            siguiente = actual.siguiente
-            actual.siguiente = anterior
-            anterior = actual
-            actual = siguiente
-        self.cabeza = anterior
-    
-    def unir(self, otra_lista):
-        if not self.cabeza:
-            self.cabeza = otra_lista.cabeza
-        else:
-            actual = self.cabeza
-            while actual.siguiente:
-                actual = actual.siguiente
-            actual.siguiente = otra_lista.cabeza
 
 
 #Definicion de funciones:
@@ -56,12 +13,14 @@ def ingresar_numero():
         valor = input("Ingresa un número entero o decimal: ")
         try:
             numero = float(valor)  # Intenta convertirlo a número (decimal o entero)
-            return numero
+            if(numero>=0):
+                return numero
+            else:
+                continue
         except ValueError:
             print("El valor ingresado no es válido. Por favor, intenta nuevamente.")
 
 def ingresar_binario():
-    
     while True:
         valor = input("Ingresa un número binario: ")
         # Contar cuántos puntos hay en el número
@@ -74,31 +33,6 @@ def ingresar_binario():
                 print("El valor ingresado no es un número binario. Intenta nuevamente.")
                 return ingresar_binario()
         return float(valor)
-
-
-#FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO:
-    #FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO CON LISTA ENLAZADA:
-def conversor_entero_binario_LE(entero):
-    #entero_aux = entero #Esto lo estaba usando por si necesitaba mostrar el numero dentro de esta funcion
-    binario = ListaEnlazada()
-    binario.insertar(",")
-    while(entero>=2):
-        aux = math.trunc(entero%2)
-        binario.insertar(aux)
-        entero = math.trunc(entero/2)
-    binario.insertar(entero)
-    return binario
-
-def conversor_decimal_binario_LE(entero):
-    decimal = entero - int(entero)
-    #decimal_aux = decimal #Esto lo estaba usando por si necesitaba mostrar el numero dentro de esta funcion
-    binario = ListaEnlazada()
-    for i in range(2):
-        aux = math.trunc(decimal*2)
-        binario.insertar(aux)
-        decimal = decimal*2
-        decimal = decimal - int(decimal)
-    return binario
 
 
     #FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO CON STRINGS:
@@ -174,20 +108,90 @@ def sumatoria_decimal_entero(entero, decimal):
 #Programa principal:
 
 #PASAR DE DECIMAL A BINARIO:
+numero = ingresar_numero()
+binario = sumatoria_entero_decimal(conversor_entero_binario_STR(numero), conversor_decimal_binario_STR(numero))
+print(f"El numero {numero} en binario es: {binario}") 
+
+#PASAR DE BINARIO A DECIMAL:
+numero = ingresar_binario()
+decimal = sumatoria_decimal_entero(conversor_binarioEnt_decimal(numero), conversor_binarioDec_decimal(numero))
+print(f"El numero {numero} en decimal es: {decimal}")
+
+
+
+
+
+#Version alternativa con lista enlazada:
+#Definicion de lista enlazada:
+class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.siguiente = None
+
+class ListaEnlazada:
+    def __init__(self):
+        self.cabeza = None
+
+    def insertar(self, dato):
+        nuevo_nodo = Nodo(dato) #se crea el nuevo nodo (3)      // se crea el nuevo nodo (2)    // se crea el nuevo nodo (1)
+        nuevo_nodo.siguiente = self.cabeza #el puntero -> None  // el puntero -> 3              // el puntero -> 2
+        self.cabeza = nuevo_nodo #Cabeza(None) = 3              // cabeza(3) = 2                // cabeza(2) = 1
+
+    def mostrar(self):
+        actual = self.cabeza
+        while (actual):
+            print(actual.dato, end= "")
+            actual = actual.siguiente
+
+    def invertir_lista(self):
+        actual = self.cabeza
+        siguiente = actual.siguiente
+        anterior = None
+        while(actual):
+            siguiente = actual.siguiente
+            actual.siguiente = anterior
+            anterior = actual
+            actual = siguiente
+        self.cabeza = anterior
+    
+    def unir(self, otra_lista):
+        if not self.cabeza:
+            self.cabeza = otra_lista.cabeza
+        else:
+            actual = self.cabeza
+            while actual.siguiente:
+                actual = actual.siguiente
+            actual.siguiente = otra_lista.cabeza
+
+
+#FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO:
+    #FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO CON LISTA ENLAZADA:
+def conversor_entero_binario_LE(entero):
+    #entero_aux = entero #Esto lo estaba usando por si necesitaba mostrar el numero dentro de esta funcion
+    binario = ListaEnlazada()
+    binario.insertar(",")
+    while(entero>=2):
+        aux = math.trunc(entero%2)
+        binario.insertar(aux)
+        entero = math.trunc(entero/2)
+    binario.insertar(entero)
+    return binario
+
+def conversor_decimal_binario_LE(entero):
+    decimal = entero - int(entero)
+    #decimal_aux = decimal #Esto lo estaba usando por si necesitaba mostrar el numero dentro de esta funcion
+    binario = ListaEnlazada()
+    for i in range(2):
+        aux = math.trunc(decimal*2)
+        binario.insertar(aux)
+        decimal = decimal*2
+        decimal = decimal - int(decimal)
+    return binario
+
+#PASAR DE DECIMAL A BINARIO:
 #Para hacerlo con lista enlazada:
 """numero = ingresar_numero()
 lista1 = conversor_entero_binario_LE(numero)
 lista2 = conversor_decimal_binario_LE(numero)
 lista1.unir(lista2)
 lista1.mostrar()"""
-
-#Para hacerlo con strings: #Tiene que tener un numero dps de la coma porque sino no anda.
-numero = ingresar_numero()
-binario = sumatoria_entero_decimal(conversor_entero_binario_STR(numero), conversor_decimal_binario_STR(numero))
-print(f"El numero {numero} en binario es: {binario}") 
-
-
-#PASAR DE BINARIO A DECIMAL:
-numero = ingresar_binario()
-decimal = sumatoria_decimal_entero(conversor_binarioEnt_decimal(numero), conversor_binarioDec_decimal(numero))
-print(f"El numero {numero} en decimal es: {decimal}")
