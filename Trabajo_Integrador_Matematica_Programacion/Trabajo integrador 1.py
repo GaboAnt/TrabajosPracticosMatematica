@@ -26,7 +26,7 @@ def ingresar_binario():
         # Contar cuántos puntos hay en el número
         if valor.count('.') > 1:  # Si hay más de un punto, no es válido
             print("El valor ingresado no es un número binario. Intenta nuevamente.")
-            return ingresar_binario()
+            continue
         # Verificar que todos los caracteres sean 0, 1 o .
         for caracter in valor:
             if caracter not in '01.': # Validar los caracteres
@@ -36,17 +36,17 @@ def ingresar_binario():
 
 
     #FUNCIONES PARA CONVERTIR DE DECIMAL A BINARIO CON STRINGS:
-def conversor_entero_binario_STR(entero):
+def resultado_entero_binario_STR(entero):
     binario = ""
     entero = int(entero) #lo convierto en un entero porque no me interesa lo que esta despues de la coma en esta funcion.
     while(entero>=2):
         aux = math.trunc(entero%2)
         binario = binario + str(aux)
-        entero = math.trunc(entero/2)
+        entero = math.trunc(entero/2) #tambien poria ser: entero = entero // 2
     binario = binario + str(entero)
     return binario[::-1] #Invierto el string con slicing para tener bien el resultado.
 
-def conversor_decimal_binario_STR(entero):
+def resultado_decimal_binario_STR(entero):
     binario = "0."
     decimal = entero - int(entero)
     if (decimal!=0):
@@ -70,9 +70,14 @@ def sumatoria_entero_decimal(entero, decimal):
     binario = entero + decimal
     return binario
 
+def convertir_decimal_a_binario():
+    numero = ingresar_numero()
+    binario = sumatoria_entero_decimal(resultado_entero_binario_STR(numero),resultado_decimal_binario_STR(numero))
+    print(f"Decimal → Binario: {numero} → {binario}")
+
 
 #FUNCIONES PARA CONVERTIR DE BINARIO A DECIMAL:
-def conversor_binarioDec_decimal(binario): #Conversor de la parte decimal del binario al decimal
+def resultado_binarioDec_decimal(binario): #Conversor de la parte decimal del binario al decimal
     cadena = str(binario)
     if "." in cadena:
         parte_decimal = cadena.split('.')[1]
@@ -87,7 +92,7 @@ def conversor_binarioDec_decimal(binario): #Conversor de la parte decimal del bi
     else:
         return 0
 
-def conversor_binarioEnt_decimal(binario):
+def resultado_binarioEnt_decimal(binario):
     binario = int(binario)
     cadena = str(binario)
     cantidad_digitos = len(cadena)
@@ -99,29 +104,26 @@ def conversor_binarioEnt_decimal(binario):
         potencia+=1
     return suma
 
-def sumatoria_decimal_entero(entero, decimal):
-    numero = entero + decimal
-    return numero
+def convertir_binario_a_decimal():
+    numero = ingresar_binario()
+    decimal = resultado_binarioEnt_decimal(numero) + resultado_binarioDec_decimal(numero)
+    print(f"Binario → Decimal: {numero} → {decimal}")
 
 
 
 #Programa principal:
 
 #PASAR DE DECIMAL A BINARIO:
-numero = ingresar_numero()
-binario = sumatoria_entero_decimal(conversor_entero_binario_STR(numero), conversor_decimal_binario_STR(numero))
-print(f"El numero {numero} en binario es: {binario}") 
-
-#PASAR DE BINARIO A DECIMAL:
-numero = ingresar_binario()
-decimal = sumatoria_decimal_entero(conversor_binarioEnt_decimal(numero), conversor_binarioDec_decimal(numero))
-print(f"El numero {numero} en decimal es: {decimal}")
+convertir_decimal_a_binario()
+convertir_binario_a_decimal()
 
 
 
 
 
-#Version alternativa con lista enlazada:
+
+
+"""#Version alternativa con lista enlazada:
 #Definicion de lista enlazada:
 class Nodo:
     def __init__(self, dato):
@@ -190,7 +192,7 @@ def conversor_decimal_binario_LE(entero):
 
 #PASAR DE DECIMAL A BINARIO:
 #Para hacerlo con lista enlazada:
-"""numero = ingresar_numero()
+numero = ingresar_numero()
 lista1 = conversor_entero_binario_LE(numero)
 lista2 = conversor_decimal_binario_LE(numero)
 lista1.unir(lista2)
